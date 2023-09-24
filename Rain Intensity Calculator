@@ -1,3 +1,4 @@
+
 #include <Servo.h> // Servo kütüphanesi
 #include <LiquidCrystal.h> // LCD kütüphanesi
 
@@ -50,19 +51,19 @@ void loop() {
   delay(1000); // Her 1 saniyede bir güncelleme
 }
 
-void yavas() {
+void Slow() {
   myservo.write(0); // Silecek pozisyonu minimum (0 derece)
   delay(4000); // 4 saniye bekleme
   myservo.write(90); // Silecek pozisyonu orta (90 derece)
 }
 
-void orta() {
+void Middle() {
   myservo.write(0); // Silecek pozisyonu minimum (0 derece)
   delay(2000); // 2 saniye bekleme
   myservo.write(135); // Silecek pozisyonu orta (90 derece)
 }
 
-void hizli() {
+void Fast() {
   myservo.write(0); // Silecek pozisyonu minimum (0 derece)
   delay(1000); // 1 saniye bekleme
   myservo.write(180); // Silecek pozisyonu orta (90 derece)
