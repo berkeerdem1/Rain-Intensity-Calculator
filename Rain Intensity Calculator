@@ -1,16 +1,16 @@
 
-#include <Servo.h> // Servo kütüphanesi
-#include <LiquidCrystal.h> // LCD kütüphanesi
+#include <Servo.h> 
+#include <LiquidCrystal.h> 
 
-Servo myservo; // Servo nesnesi
-LiquidCrystal lcd(13, 12, 4, 3, 2, 1); // LCD pimleri
+Servo myservo; // Servo
+LiquidCrystal lcd(13, 12, 4, 3, 2, 1); // LCD pins
 
 const int rainSensorPin = A0;
 
 void setup() {
   myservo.attach(8);
-  lcd.begin(16, 2); // LCD başlatma
-  lcd.print("Rainfall System "); // Başlangıç mesajı
+  lcd.begin(16, 2); // LCD Start
+  lcd.print("Rainfall System "); // Start message
   lcd.setCursor(0, 1);
   lcd.print("Ready.");
   delay(1000);
@@ -18,12 +18,12 @@ void setup() {
 }
 
 void loop() {
-  int rainIntensity = analogRead(rainSensorPin); // Yağmur şiddeti okuması (0-1023)
+  int rainIntensity = analogRead(rainSensorPin); // Rain Intensity reading (0-1023)
 
-  // Yağmur şiddeti yüzdelik olarak hesaplama
+  // Rain Intensity as a percentage calculate
   int percentage = map(rainIntensity, 0, 1023, 0, 100);
 
-  // Yağış hızı ve silecek modunu LCD'ye yazdırma
+  
   lcd.setCursor(0, 0);
   lcd.print("Speed : ");
   lcd.print(percentage);
@@ -32,39 +32,39 @@ void loop() {
   lcd.setCursor(0, 1);
   lcd.print("Mod: ");
 
-  // Yağmur şiddetine göre silecek modunu belirleme ve çalıştırma
+  // Determining and operating wiper mode according to rain intensity
   if (percentage >= 1 && percentage <= 25) {
     lcd.print("Slow");
-    yavas();
+    Slow();
   }
   else if (percentage > 25 && percentage <= 60) {
     lcd.print("Middle");
-    orta();
+    Middle();
   } 
   else if (percentage > 60 && percentage <= 100) {
     lcd.print("Fast");
-    hizli();
+    Fast();
   } 
   else {
     lcd.print("Unknown");
   }
-  delay(1000); // Her 1 saniyede bir güncelleme
+  delay(1000);
 }
 
 void Slow() {
-  myservo.write(0); // Silecek pozisyonu minimum (0 derece)
-  delay(4000); // 4 saniye bekleme
-  myservo.write(90); // Silecek pozisyonu orta (90 derece)
+  myservo.write(0); // wiper position min (0 degree)
+  delay(4000); // 4 second wait
+  myservo.write(90); // wiper position middle (90 degree)
 }
 
 void Middle() {
-  myservo.write(0); // Silecek pozisyonu minimum (0 derece)
-  delay(2000); // 2 saniye bekleme
-  myservo.write(135); // Silecek pozisyonu orta (90 derece)
+  myservo.write(0); // wiper position min (0 degree)
+  delay(2000); // 2 second wait
+  myservo.write(135); // wiper position midlle (90 degree)
 }
 
 void Fast() {
-  myservo.write(0); // Silecek pozisyonu minimum (0 derece)
-  delay(1000); // 1 saniye bekleme
-  myservo.write(180); // Silecek pozisyonu orta (90 derece)
+  myservo.write(0); // wiper position min (0 degree)
+  delay(1000); // 1 second wait
+  myservo.write(180); // wiper position middle (90 degree)
 }
