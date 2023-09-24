@@ -1,0 +1,69 @@
+#include <Servo.h> // Servo kütüphanesi
+#include <LiquidCrystal.h> // LCD kütüphanesi
+
+Servo myservo; // Servo nesnesi
+LiquidCrystal lcd(13, 12, 4, 3, 2, 1); // LCD pimleri
+
+const int rainSensorPin = A0;
+
+void setup() {
+  myservo.attach(8);
+  lcd.begin(16, 2); // LCD başlatma
+  lcd.print("Rainfall System "); // Başlangıç mesajı
+  lcd.setCursor(0, 1);
+  lcd.print("Ready.");
+  delay(1000);
+  lcd.clear();
+}
+
+void loop() {
+  int rainIntensity = analogRead(rainSensorPin); // Yağmur şiddeti okuması (0-1023)
+
+  // Yağmur şiddeti yüzdelik olarak hesaplama
+  int percentage = map(rainIntensity, 0, 1023, 0, 100);
+
+  // Yağış hızı ve silecek modunu LCD'ye yazdırma
+  lcd.setCursor(0, 0);
+  lcd.print("Speed : ");
+  lcd.print(percentage);
+  lcd.print("%");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Mod: ");
+
+  // Yağmur şiddetine göre silecek modunu belirleme ve çalıştırma
+  if (percentage >= 1 && percentage <= 25) {
+    lcd.print("Slow");
+    yavas();
+  }
+  else if (percentage > 25 && percentage <= 60) {
+    lcd.print("Middle");
+    orta();
+  } 
+  else if (percentage > 60 && percentage <= 100) {
+    lcd.print("Fast");
+    hizli();
+  } 
+  else {
+    lcd.print("Unknown");
+  }
+  delay(1000); // Her 1 saniyede bir güncelleme
+}
+
+void yavas() {
+  myservo.write(0); // Silecek pozisyonu minimum (0 derece)
+  delay(4000); // 4 saniye bekleme
+  myservo.write(90); // Silecek pozisyonu orta (90 derece)
+}
+
+void orta() {
+  myservo.write(0); // Silecek pozisyonu minimum (0 derece)
+  delay(2000); // 2 saniye bekleme
+  myservo.write(135); // Silecek pozisyonu orta (90 derece)
+}
+
+void hizli() {
+  myservo.write(0); // Silecek pozisyonu minimum (0 derece)
+  delay(1000); // 1 saniye bekleme
+  myservo.write(180); // Silecek pozisyonu orta (90 derece)
+}
